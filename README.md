@@ -99,7 +99,7 @@ medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vu
 
 ### 🛡️ Análise de Riscos e Mitigações
 
-** Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente: **
+**Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:**
 
 - Política de Senhas Fortes: Implementar uma política rigorosa que exija senhas com no mínimo 12 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos. Proibir o uso de nomes de usuário, sequências ou palavras comuns como senha.
 - Bloqueio de Contas (Account Lockout): Configurar todos os serviços para bloquear temporariamente uma conta (ex: por 15 minutos) após 3 a 5 tentativas de login sem sucesso. Isso neutraliza a eficácia de ataques de força bruta automatizados.
