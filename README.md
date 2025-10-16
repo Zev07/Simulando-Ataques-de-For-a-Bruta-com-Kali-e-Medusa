@@ -86,7 +86,7 @@ A credencial `msfadmin:msfadmin` foi descoberta. Para validar, foi realizado um 
 
 **Evidência de Sucesso:**
 
-![Login bem-sucedido no FTP](screenshots/04-validacao-ftp-login.png)
+![Login bem-sucedido no FTP](screenshots/04-validacao-fpt-login.png)
 
 ### Cenário 2: Web Form Brute Force (DVWA)
 O alvo foi o formulário de Brute Force do DVWA (Damn Vulnerable Web Application), com nível de segurança baixo. O objetivo era descobrir a senha do usuário `admin`.
@@ -99,10 +99,12 @@ medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vu
 
 ## 🛡️ Análise de Riscos e Mitigações
 
-###Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:
+### Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:
 
 - Política de Senhas Fortes: Implementar uma política rigorosa que exija senhas com no mínimo 12 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos. Proibir o uso de nomes de usuário, sequências ou palavras comuns como senha.
 - Bloqueio de Contas (Account Lockout): Configurar todos os serviços para bloquear temporariamente uma conta (ex: por 15 minutos) após 3 a 5 tentativas de login sem sucesso. Isso neutraliza a eficácia de ataques de força bruta automatizados.
 - Uso de Protocolos Seguros: Substituir o FTP, que transmite credenciais em texto claro, por alternativas seguras como SFTP (SSH File Transfer Protocol) ou FTPS (FTP over SSL/TLS) para garantir a criptografia.
 - Segurança em Aplicações Web: Implementar CAPTCHA após algumas tentativas de login e, como camada principal de defesa, habilitar a Autenticação de Múltiplos Fatores (MFA) em todos os formulários de autenticação.
 - Monitoramento e Alertas: Configurar logs de segurança para registrar todas as tentativas de login (sucesso e falha) e criar alertas para um número anômalo de falhas vindas de um mesmo endereço IP, podendo ser integrado a ferramentas como o Fail2Ban para bloqueio automático.
+
+
