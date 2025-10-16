@@ -3,8 +3,6 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
 ![GitHub license](https://img.shields.io/github/license/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
 
-<img src="images/diagrama-ambiente.png" alt="Diagrama do Ambiente de Laboratório">
-
 ### Sobre o projeto
 > Projeto prático desenvolvido para o bootcamp de Cibersegurança da DIO. O objetivo é documentar a simulação de ataques de força bruta em um ambiente de laboratório controlado, utilizando Kali Linux, Medusa e Metasploitable 2 para identificar vulnerabilidades e propor medidas de segurança eficazes.
 
@@ -14,7 +12,7 @@
 * [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 * [Ajustes e Melhorias](#-ajustes-e-melhorias)
 * [Pré-requisitos](#-pré-requisitos)
-* [Configurando o Ambiente](#-configurando-o-ambiente)
+* [Configurando o Ambiente e Reconhecimento](#-configurando-o-ambiente-e-reconhecimento)
 * [Executando os Cenários de Ataque](#-executando-os-cenários-de-ataque)
   * [Cenário 1: FTP Brute Force](#cenário-1-ftp-brute-force)
   * [Cenário 2: Web Form Brute Force (DVWA)](#cenário-2-web-form-brute-force-dvwa)
@@ -46,6 +44,7 @@ O projeto foi concluído conforme o escopo do desafio.
 - [x] Execução de ataque de força bruta em FTP
 - [x] Execução de ataque de força bruta em formulário Web (DVWA)
 - [x] Execução de password spraying em SMB
+- [x] Documentação completa do processo e recomendações de segurança
 
 ---
 
@@ -60,71 +59,50 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos para repl
 
 ---
 
-## 🚀 Configurando o Ambiente
-Para configurar o laboratório de pentest, siga estas etapas:
+## 🚀 Configurando o Ambiente e Reconhecimento
+Para configurar o laboratório de pentest, as VMs foram configuradas em uma rede Host-Only. A conectividade foi validada com um teste de `ping` e, em seguida, um scan de reconhecimento com `Nmap` foi executado para identificar os serviços expostos na máquina alvo.
 
-1. **Crie uma Rede Host-Only no VirtualBox:** Vá em `Arquivo > Gerenciador de Redes do Hospedeiro` e crie uma nova placa.
-2. **Importe a VM do Kali Linux:** Configure a rede da VM para o modo "Host-Only Adapter".
-3. **Crie e Configure a VM do Metasploitable 2:** Use o disco `.vmdk` existente e configure a rede também para "Host-Only Adapter".
-4. **Valide a Conectividade:** Inicie ambas as VMs, obtenha o IP de cada uma (`ip a` ou `ifconfig`) e execute um `ping` do Kali para o Metasploitable para garantir que elas se comuniquem.
+**Validação de Conectividade:**
 
----
+![Teste de Ping para validar a conectividade](screenshots/01-teste-ping.png)
 
-## ⚔️ Cenários de Ataque Executados
+**Scan de Reconhecimento:**
 
-### 1. Ataque de Força Bruta em FTP (Porta 21)
-
-O serviço `vsftpd 2.3.4` foi identificado como alvo. Um ataque de dicionário com Medusa foi realizado para encontrar credenciais válidas.
-
-**Comando:**
-```bash
-medusa -h 192.168.56.101 -U usuarios.txt -P senhas.txt -M ftp
-```
-
-**Resultado:**
-A credencial `msfadmin:msfadmin` foi comprometida com sucesso.
-
-**Evidência:**
-![Resultado do Ataque FTP](images/ataque-ftp-sucesso.png)
-
-### 2. Ataque em Formulário Web (DVWA - Low Security)
-
-O alvo foi o formulário de Brute Force do DVWA. O objetivo era descobrir a senha do usuário `admin`.
-
-**Comando:**
-```bash
-medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vulnerabilities/brute/?username=^USER^&password=^PASS^&Login=Login" -m DENY-SIGNAL:"incorrect"
-```
-
-**Resultado:**
-A senha `password` foi descoberta para o usuário `admin`.
-
-**Evidência:**
-![Resultado do Ataque DVWA](images/resultado-dvwa.png)
-
-### 3. Password Spraying em SMB (Porta 445)
-
-Primeiro, usuários foram enumerados com `enum4linux`. Em seguida, um ataque de *password spraying* foi realizado, testando um pequeno número de senhas comuns contra a lista de usuários encontrados.
-
-**Comando:**
-```bash
-medusa -h 192.168.56.101 -U usuarios_smb.txt -P senhas_spray.txt -M smbnt
-```
-
-**Resultado:**
-A credencial `msfadmin:msfadmin` foi novamente validada, mostrando que a mesma senha fraca estava sendo reutilizada em múltiplos serviços.
-
-**Evidência:**
-![Resultado do Ataque SMB](images/ataque-smb-sucesso.png)
+![Scan de reconhecimento com Nmap](screenshots/02-scan-nmap.png)
 
 ---
 
-## 🛡️ Recomendações de Mitigação
+## ⚔️ Executando os Cenários de Ataque
 
-Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:
+### Cenário 1: FTP Brute Force
+O serviço `vsftpd 2.3.4` na porta 21 foi o alvo. Um ataque de dicionário com Medusa foi realizado para encontrar credenciais válidas.
 
-1.  **Política de Senhas Fortes:** Implementar uma política que exija senhas com no mínimo 12 caracteres, incluindo maiúsculas, minúsculas, números e símbolos. Proibir o uso de nomes de usuário como senha.
-2.  **Bloqueio de Contas (Account Lockout):** Configurar todos os serviços para bloquear temporariamente uma conta (ex: por 15 minutos) após 5 tentativas de login sem sucesso. Isso neutraliza a eficácia de ataques de força bruta.
-3.  **Uso de Protocolos Seguros:** Substituir o FTP pelo **SFTP** ou **FTPS** para criptografar o tráfego de autenticação e dados.
-4.  **Segurança em Aplicações Web:** Implementar **CAPTCHA** e **Autenticação de Múltiplos Fatores (MFA)** em formulários de login para impedir ataques automatizados.
-5.  **Monitoramento e Alertas:** Configurar logs para registrar tentativas de login falhas e criar alertas para um número anômalo de falhas vindas de um mesmo IP, integrando ferramentas como o **Fail2Ban**.
+**Comando Utilizado:**
+
+![Comando do ataque Medusa em FTP](screenshots/03-comando-medusa-ftp.png)
+
+**Resultado e Validação:**
+A credencial `msfadmin:msfadmin` foi descoberta. Para validar, foi realizado um login manual no serviço FTP, que confirmou o acesso bem-sucedido.
+
+**Evidência de Sucesso:**
+
+![Login bem-sucedido no FTP](screenshots/04-validacao-ftp-login.png)
+
+### Cenário 2: Web Form Brute Force (DVWA)
+O alvo foi o formulário de Brute Force do DVWA (Damn Vulnerable Web Application), com nível de segurança baixo. O objetivo era descobrir a senha do usuário `admin`.
+
+**Comando Utilizado:**
+
+```bash
+medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vulnerabilities/brute/?username=^USER^&password=^PASS^&Login=Login" -m DENY-SIGNAL:"incorrect
+```
+
+## 🛡️ Análise de Riscos e Mitigações
+
+###Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:
+
+- Política de Senhas Fortes: Implementar uma política rigorosa que exija senhas com no mínimo 12 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos. Proibir o uso de nomes de usuário, sequências ou palavras comuns como senha.
+- Bloqueio de Contas (Account Lockout): Configurar todos os serviços para bloquear temporariamente uma conta (ex: por 15 minutos) após 3 a 5 tentativas de login sem sucesso. Isso neutraliza a eficácia de ataques de força bruta automatizados.
+- Uso de Protocolos Seguros: Substituir o FTP, que transmite credenciais em texto claro, por alternativas seguras como SFTP (SSH File Transfer Protocol) ou FTPS (FTP over SSL/TLS) para garantir a criptografia.
+- Segurança em Aplicações Web: Implementar CAPTCHA após algumas tentativas de login e, como camada principal de defesa, habilitar a Autenticação de Múltiplos Fatores (MFA) em todos os formulários de autenticação.
+- Monitoramento e Alertas: Configurar logs de segurança para registrar todas as tentativas de login (sucesso e falha) e criar alertas para um número anômalo de falhas vindas de um mesmo endereço IP, podendo ser integrado a ferramentas como o Fail2Ban para bloqueio automático.
