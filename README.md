@@ -48,7 +48,7 @@ O projeto foi concluído conforme o escopo do desafio.
 
 ---
 
-## 💻 Pré-requisitos
+### 💻 Pré-requisitos
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos para replicar o ambiente:
 
@@ -59,7 +59,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos para repl
 
 ---
 
-## 🚀 Configurando o Ambiente e Reconhecimento
+### 🚀 Configurando o Ambiente e Reconhecimento
 Para configurar o laboratório de pentest, as VMs foram configuradas em uma rede Host-Only. A conectividade foi validada com um teste de `ping` e, em seguida, um scan de reconhecimento com `Nmap` foi executado para identificar os serviços expostos na máquina alvo.
 
 **Validação de Conectividade:**
@@ -72,7 +72,7 @@ Para configurar o laboratório de pentest, as VMs foram configuradas em uma rede
 
 ---
 
-## ⚔️ Executando os Cenários de Ataque
+### ⚔️ Executando os Cenários de Ataque
 
 ### Cenário 1: FTP Brute Force
 O serviço `vsftpd 2.3.4` na porta 21 foi o alvo. Um ataque de dicionário com Medusa foi realizado para encontrar credenciais válidas.
@@ -97,9 +97,9 @@ O alvo foi o formulário de Brute Force do DVWA (Damn Vulnerable Web Application
 medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vulnerabilities/brute/?username=^USER^&password=^PASS^&Login=Login" -m DENY-SIGNAL:"incorrect
 ```
 
-## 🛡️ Análise de Riscos e Mitigações
+### 🛡️ Análise de Riscos e Mitigações
 
-### Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente:
+** Com base nas vulnerabilidades exploradas, as seguintes contramedidas são recomendadas para fortalecer a segurança do ambiente: **
 
 - Política de Senhas Fortes: Implementar uma política rigorosa que exija senhas com no mínimo 12 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos. Proibir o uso de nomes de usuário, sequências ou palavras comuns como senha.
 - Bloqueio de Contas (Account Lockout): Configurar todos os serviços para bloquear temporariamente uma conta (ex: por 15 minutos) após 3 a 5 tentativas de login sem sucesso. Isso neutraliza a eficácia de ataques de força bruta automatizados.
@@ -107,4 +107,9 @@ medusa -h 192.168.56.101 -u admin -P senhas.txt -M http -m GET -m FORM:"/dvwa/vu
 - Segurança em Aplicações Web: Implementar CAPTCHA após algumas tentativas de login e, como camada principal de defesa, habilitar a Autenticação de Múltiplos Fatores (MFA) em todos os formulários de autenticação.
 - Monitoramento e Alertas: Configurar logs de segurança para registrar todas as tentativas de login (sucesso e falha) e criar alertas para um número anômalo de falhas vindas de um mesmo endereço IP, podendo ser integrado a ferramentas como o Fail2Ban para bloqueio automático.
 
+### 📜 Licença
+Este projeto está sob a licença MIT. Veja o arquivo para mais detalhes.
 
+
+### Autor
+Feito por **José "([Zev](https://github.com/Zev07))" Silva**
