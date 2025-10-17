@@ -1,7 +1,7 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
-![GitHub last commit](https://img.shields.io/github/last-commit/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
-![GitHub license](https://img.shields.io/github/license/Zev07/Simulando-Ataques-de-For-a-Bruta-com-Kali-e-Medusa?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Zev07/Simulando-Ataques-de-Forca-Bruta-com-Kali-e-Medusa?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/Zev07/Simulando-Ataques-de-Forca-Bruta-com-Kali-e-Medusa?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/Zev07/Simulando-Ataques-de-Forca-Bruta-com-Kali-e-Medusa?style=for-the-badge)
+![GitHub license](https://img.shields.io/github/license/Zev07/Simulando-Ataques-de-Forca-Bruta-com-Kali-e-Medusa?style=for-the-badge)
 
 ### Sobre o projeto
 > Projeto prático desenvolvido para o bootcamp de Cibersegurança da DIO. O objetivo é documentar a simulação de ataques de força bruta em um ambiente de laboratório controlado, utilizando Kali Linux, Medusa e Metasploitable 2 para identificar vulnerabilidades e propor medidas de segurança eficazes.
